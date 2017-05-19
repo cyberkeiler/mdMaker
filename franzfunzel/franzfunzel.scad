@@ -10,8 +10,8 @@ $depth = $width;
 $height = $layer_anz * $layer_thickness;
 
 // Anzeige Settings
-$fn = 16;
-$show_layer = 1;
+$fn = 128;
+$show_layer = 4;
 $show2d = true;
 
 // Button
@@ -32,8 +32,8 @@ $dieb_l=30;
 $dieb_r=$width/2-20;
 
 
-
-
+union(){
+difference(){
 projection(cut = false)
 difference(){
     color([0.1,.5,.5,0.5])
@@ -45,9 +45,17 @@ difference(){
             }
          }
     };
-    ButtonLoch();
-    FassungsLoch();
-        
+    ButtonLochTop();
+    
+    duebepoints();
+    
+}
+projection(cut = false)
+FassungsLoch();
+}
+
+projection(cut = false)
+FassungsOeffnung();
 }
 
 //SonoffCorpus();
@@ -91,17 +99,15 @@ union(){
     };
 }
 
-module duebel90(){
+module duebepoints(){
 union(){
-        for(i = [1 : 1 : $layer_anz-1]){  
-            rotate([0,0,90*i])
-            union(){
-                translate([$dieb_r,$dieb_r,$layer_thickness*(i)])
-                    cylinder(r=3, h=30, center=true);
-                translate([-$dieb_r,-$dieb_r,$layer_thickness*(i)])
-                    cylinder(r=3, h=30, center=true);
-            }
-         }
+        
+           for(o = [1 : 1 : 4]){ 
+            rotate([0,0,90*o])
+                translate([$dieb_r,$dieb_r,$height/2])
+                    cylinder(r=3, h=$height+0.2, center=true);
+        }
+         
     };
 }
 
@@ -111,16 +117,28 @@ module ButtonLoch(){
         rotate([0,90,0])
             cylinder(r=$button_diameter/2, h=10.1);
 }
+module ButtonLochTop(){
+    translate([$width/3,0,$height-20.1])
+        rotate([0,0,0])
+            cylinder(r=$button_diameter/2, h=20.2);
+}
 
 module FassungsLoch(){
     union(){
-    translate([0,0,$height+0.1])
+        FassungsOeffnung();
+        FassungsTunnel();
+    }
+}
+
+module FassungsOeffnung(){
+translate([0,0,$height+0.1])
         rotate([180,0,0])
             cylinder(r=$fass_op_d/2, h=$fass_op_l+0.2);
+}
+module FassungsTunnel(){
     translate([0,0,$height-$fass_op_l])
         rotate([180,0,0])
             cylinder(r=$fass_d/2, h=$fass_l);
-    }
 }
 
 module sonoffLoch(){
