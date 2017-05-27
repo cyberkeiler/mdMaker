@@ -20,7 +20,7 @@ $button_layer = ceil($layer_anz/2);     // zwischen Welchen Ebene der Button ein
 $button_diameter=19;    // Der Einbaudurchmesser des Buttons
 
 /* ### Lampenfassung ###*/
-$fass_d = 40; // Fassung Durchmesser
+$fass_d = 41; // Fassung Durchmesser
 $fass_l = 47; // Fassung Länge
 
 $fass_op_d = 35; // Fassung Öffnungs Durchmesser
@@ -30,6 +30,9 @@ $fass_op_l = 3; // Fassung Öffnung Tiefe
 $dueb_d = 6;
 $dieb_l=30;
 $dieb_r=$width/2-20;
+
+/* Stellt 3D Modell des Fassungsausschnitts ( "FassungCutout()" ) bereit: */
+include <fassung.scad>
 
 
 union(){
