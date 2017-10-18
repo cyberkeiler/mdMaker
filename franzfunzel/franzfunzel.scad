@@ -1,6 +1,6 @@
 // Layers of Multiplex
-$layer_anz = 4;
-$layer_thickness = 20;
+$layer_anz = 10;
+$layer_thickness = 12;
 
 /* ### Corpus ###*/
 $corpus="sonos";
@@ -11,7 +11,7 @@ $height = $layer_anz * $layer_thickness;
 
 // Anzeige Settings
 $fn = 128;
-$show_layer = 4;
+$show_layer = 1;
 $show2d = true;
 
 // Button
@@ -23,7 +23,7 @@ $button_diameter=19;    // Der Einbaudurchmesser des Buttons
 $fass_d = 41; // Fassung Durchmesser
 $fass_l = 47; // Fassung Länge
 
-$fass_op_d = 35; // Fassung Öffnungs Durchmesser
+$fass_op_d = 10; // Fassung Öffnungs Durchmesser
 $fass_op_l = 3; // Fassung Öffnung Tiefe
 
 /* ### Dübel ###*/
@@ -35,9 +35,10 @@ $dieb_r=$width/2-20;
 include <fassung.scad>
 
 
-union(){
+    projection(cut = true)
+    translate([0,0,-12+3])
 difference(){
-projection(cut = false)
+//projection(cut = false)
 difference(){
     color([0.1,.5,.5,0.5])
     union(){
@@ -50,16 +51,23 @@ difference(){
     };
     ButtonLochTop();
     
+    translate([0,0,6])
     duebepoints();
     
 }
-projection(cut = false)
+//projection(cut = false)
 FassungsLoch();
+
+translate([-20,0,2*$layer_thickness])
+rotate([180,0,0])
+import("sonoff-th.stl");
+
+
+//projection(cut = false)
+//FassungsOeffnung();
 }
 
-projection(cut = false)
-FassungsOeffnung();
-}
+
 
 //SonoffCorpus();
 
@@ -136,7 +144,7 @@ module FassungsLoch(){
 module FassungsOeffnung(){
 translate([0,0,$height+0.1])
         rotate([180,0,0])
-            cylinder(r=$fass_op_d/2, h=$fass_op_l+0.2);
+            cylinder(r=36/2, h=$fass_op_l+0.2);
 }
 module FassungsTunnel(){
     translate([0,0,$height-$fass_op_l])
